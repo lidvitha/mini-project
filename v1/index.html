@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Robot Bobby Earth</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      #infoBox {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        color: white;
+        font-family: Arial;
+        font-size: 16px;
+        text-align: left;
+        pointer-events: none; /* Prevent interaction with the text box */
+        background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+        padding: 20px; /* Add padding for better readability */
+        border-radius: 10px; /* Add border radius for rounded corners */
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.131/build/three.module.js",
+          "jsm/": "https://cdn.jsdelivr.net/npm/three@0.131/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="infoBox">
+      <h3>Earth</h3>
+      <p>
+        Earth is the third planet from the Sun and the only known astronomical
+        object to harbor life.
+      </p>
+      <p>
+        It is home to millions of species, including humans, and has a diverse
+        range of ecosystems.
+      </p>
+      <p>
+        Earth's atmosphere protects life on the planet by absorbing ultraviolet
+        solar radiation.
+      </p>
+    </div>
+    <script type="module" src="index.js"></script>
+  </body>
+</html>
