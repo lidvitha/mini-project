@@ -5,31 +5,393 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMv7Mk4tx7yZP4CwITwJ17+u2UqsiE5PH4R/gXz"
+      crossorigin="anonymous"
+    />
     <title>Brain</title>
     <script type="module" src="./js/model.js"></script>
+    <style>
+      body {
+        margin: 0;
+        background-color: black;
+        color: white;
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+        padding: 20px;
+      }
+      #brain {
+        width: 100px; /* Set a width for the brain model */
+        margin-top: 150px;
+        margin-right: 500px;
+      }
+      #brain-info {
+        max-width: 600px;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 20px;
+        border-radius: 10px;
+        text-align: left;
+        order: 1;
+      }
+      #brain-info h6 {
+        font-size: 24px;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      #brain-info p {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+      #buttonContainer {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+        order: 2;
+      }
+      #voiceButton,
+      #learnMoreButton {
+        padding: 12px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 120px;
+      }
+      #learnMoreButton {
+        background-color: #00a0e3;
+      }
+
+      /* Chatbot styling */
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+      .chatbot-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 350px;
+        background-color: #1f1f1f;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+        border-radius: 15px;
+        font-family: "Poppins", sans-serif;
+        color: white;
+      }
+      .chatbot-header {
+        background-color: #4caf50;
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-size: 1.2em;
+        font-weight: 600;
+        border-radius: 15px 15px 0 0;
+      }
+      .chatbot-messages {
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 20px;
+        background-color: #333;
+        border-radius: 0 0 15px 15px;
+      }
+      .chatbot-message {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 10px;
+      }
+      .chatbot-message.user {
+        text-align: right;
+        background-color: #4caf50;
+        color: white;
+        align-self: flex-end;
+        font-weight: 500;
+      }
+      .chatbot-message.bot {
+        text-align: left;
+        background-color: #2a2a2a;
+        color: #e0e0e0;
+        font-weight: 400;
+      }
+      .chatbot-questions {
+        padding: 10px;
+        background-color: #1f1f1f;
+        border-top: 1px solid #555;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      .chatbot-questions button {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: 500;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+      }
+      .chatbot-questions button:hover {
+        background-color: #45a049;
+      }
+      .pause-button {
+        padding: 10px;
+        background-color: #af4c4c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 10px auto;
+        width: 120px;
+      }
+      .pause-button i {
+        margin-right: 8px;
+      }
+    </style>
   </head>
 
   <body>
-    <main>
-      <section>
-        <div id="brain">
-          <h6>BRAIN</h6>
-          <div id="brain-info">
-            <p>
-              The brain is an incredibly complex organ responsible for various
-              functions including cognition, emotion, memory, and more.
-            </p>
-            <p>
-              It consists of billions of neurons interconnected through
-              synapses, forming intricate neural networks.
-            </p>
-            <p>
-              Studying the brain helps us understand human behavior, perception,
-              and consciousness, as well as neurological disorders.
-            </p>
-          </div>
+    <div id="brain"></div>
+
+    <div id="container">
+      <!-- <div id="brain-info">
+        <h6>BRAIN</h6>
+        <p>
+          The brain is an incredibly complex organ responsible for various
+          functions including cognition, emotion, memory, and more.
+        </p>
+        <p>
+          It consists of billions of neurons interconnected through synapses,
+          forming intricate neural networks.
+        </p>
+        <p>
+          Studying the brain helps us understand human behavior, perception, and
+          consciousness, as well as neurological disorders.
+        </p>
+      </div>
+
+      <div id="buttonContainer">
+        <button id="voiceButton">Listen</button>
+        <button
+          id="learnMoreButton"
+          onclick="window.open('https://en.wikipedia.org/wiki/Brain', '_blank')"
+        >
+          Learn More
+        </button>
+      </div> -->
+    </div>
+
+    <!-- Chatbot UI -->
+    <div class="chatbot-container">
+      <div class="chatbot-header">🧠 Brain Chatbot</div>
+      <div class="chatbot-messages" id="chatbotMessages">
+        <div class="chatbot-message bot">
+          Hello! Select a question to learn about the brain.
         </div>
-      </section>
-    </main>
+      </div>
+      <div class="chatbot-questions" id="chatbotQuestions"></div>
+      <button id="pauseChatBotButton" class="pause-button">
+        <i class="fas fa-pause"></i> Pause
+      </button>
+    </div>
+
+    <script>
+      // Define the chatbot questions and responses
+      const questionStages = [
+        [
+          { question: "What is the brain?", key: "what is the brain" },
+          {
+            question: "What is the brain made of?",
+            key: "what is the brain made of",
+          },
+          {
+            question: "What does the brain control?",
+            key: "what does the brain control",
+          },
+        ],
+        [
+          {
+            question: "How many neurons are in the brain?",
+            key: "how many neurons are in the brain",
+          },
+          { question: "What is memory?", key: "what is memory" },
+          { question: "What is the cerebrum?", key: "what is the cerebrum" },
+        ],
+        [
+          { question: "What is the brainstem?", key: "what is the brainstem" },
+          {
+            question: "What is the cerebellum?",
+            key: "what is the cerebellum",
+          },
+          {
+            question: "How does the brain process information?",
+            key: "how does the brain process information",
+          },
+        ],
+        [
+          {
+            question: "What is the function of glial cells?",
+            key: "what is the function of glial cells",
+          },
+          {
+            question: "What are neurotransmitters?",
+            key: "what are neurotransmitters",
+          },
+          {
+            question: "How does the brain communicate with the body?",
+            key: "how does the brain communicate with the body",
+          },
+        ],
+        [
+          {
+            question: "What are the different parts of the brain?",
+            key: "what are the different parts of the brain",
+          },
+          {
+            question: "How does the brain create thoughts?",
+            key: "how does the brain create thoughts",
+          },
+          {
+            question: "What is the limbic system?",
+            key: "what is the limbic system",
+          },
+        ],
+        [
+          {
+            question: "How does the brain store memories?",
+            key: "how does the brain store memories",
+          },
+          {
+            question: "What is the role of the prefrontal cortex?",
+            key: "what is the role of the prefrontal cortex",
+          },
+          {
+            question: "How does the brain develop over time?",
+            key: "how does the brain develop over time",
+          },
+        ],
+      ];
+
+      const responses = {
+        "what is the brain":
+          "The brain is an organ that serves as the center of the nervous system, responsible for thoughts, memory, emotion, and more.",
+        "what is the brain made of":
+          "The brain is made of neurons, glial cells, and connective tissue, forming a complex network.",
+        "what does the brain control":
+          "The brain controls voluntary and involuntary actions, including breathing, movement, and sensory processing.",
+        "how many neurons are in the brain":
+          "The brain contains approximately 86 billion neurons that communicate through synapses.",
+        "what is memory":
+          "Memory is the process by which the brain stores and recalls information and experiences.",
+        "what is the cerebrum":
+          "The cerebrum is the largest part of the brain, involved in sensory perception, thought, and voluntary movements.",
+        "what is the brainstem":
+          "The brainstem connects the brain to the spinal cord and controls vital functions like heart rate and breathing.",
+        "what is the cerebellum":
+          "The cerebellum is responsible for coordinating movement, balance, and posture.",
+        "how does the brain process information":
+          "The brain processes information through electrical signals transmitted between neurons across synapses.",
+        "what is the function of glial cells":
+          "Glial cells support neurons by providing nutrition, maintaining the environment, and assisting in signal transmission.",
+        "what are neurotransmitters":
+          "Neurotransmitters are chemical messengers that transmit signals across synapses between neurons.",
+        "how does the brain communicate with the body":
+          "The brain communicates with the body through the nervous system, sending signals to muscles and organs via neurons.",
+        "what are the different parts of the brain":
+          "The main parts of the brain are the cerebrum, cerebellum, and brainstem, each with distinct functions.",
+        "how does the brain create thoughts":
+          "Thoughts are created by complex interactions between neurons in various parts of the brain, especially in the cerebral cortex.",
+        "what is the limbic system":
+          "The limbic system is a group of structures involved in emotions, behavior, and long-term memory formation.",
+        "how does the brain store memories":
+          "The brain stores memories by forming new neural connections and strengthening existing ones, mainly in the hippocampus.",
+        "what is the role of the prefrontal cortex":
+          "The prefrontal cortex is involved in decision-making, personality expression, and complex cognitive behavior.",
+        "how does the brain develop over time":
+          "The brain develops rapidly in early childhood, forming and pruning neural connections, and continues developing into early adulthood.",
+      };
+
+      let currentStage = 0;
+      let isChatPaused = false; // Track the pause state for chatbot
+      let chatSpeech = null; // Store the current speech utterance
+
+      function loadQuestions(stage) {
+        const questionContainer = document.getElementById("chatbotQuestions");
+        questionContainer.innerHTML = "";
+        questionStages[stage].forEach((item) => {
+          const button = document.createElement("button");
+          button.textContent = item.question;
+          button.onclick = () => handleQuestion(item.key);
+          questionContainer.appendChild(button);
+        });
+      }
+
+      // Speech synthesis function for chatbot with pause and resume functionality
+      function speak(text) {
+        speechSynthesis.cancel(); // Stop any ongoing speech
+        chatSpeech = new SpeechSynthesisUtterance(text);
+        chatSpeech.lang = "en-US";
+        speechSynthesis.speak(chatSpeech);
+      }
+
+      function handleQuestion(key) {
+        addChatMessage("user", key);
+        const response =
+          responses[key] ||
+          "I'm not sure about that. Try asking something else about the brain!";
+        addChatMessage("bot", response);
+        speak(response); // Speak the bot response
+
+        currentStage = (currentStage + 1) % questionStages.length;
+        loadQuestions(currentStage);
+      }
+
+      function addChatMessage(sender, message) {
+        const messagesContainer = document.getElementById("chatbotMessages");
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("chatbot-message", sender);
+        messageDiv.textContent = message;
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+
+      document.addEventListener("DOMContentLoaded", () =>
+        loadQuestions(currentStage)
+      );
+
+      // Pause/Resume button functionality for chatbot speech
+      const pauseChatBotButton = document.getElementById("pauseChatBotButton");
+      pauseChatBotButton.addEventListener("click", () => {
+        if (speechSynthesis.speaking && !isChatPaused) {
+          speechSynthesis.pause();
+          isChatPaused = true;
+          pauseChatBotButton.innerHTML = '<i class="fas fa-play"></i> Resume';
+        } else if (isChatPaused) {
+          speechSynthesis.resume();
+          isChatPaused = false;
+          pauseChatBotButton.innerHTML = '<i class="fas fa-pause"></i> Pause';
+        }
+      });
+
+      // Reset the pause button when chat speech ends
+      if (chatSpeech) {
+        chatSpeech.onend = () => {
+          pauseChatBotButton.innerHTML = '<i class="fas fa-pause"></i> Pause';
+          isChatPaused = false;
+        };
+      }
+    </script>
   </body>
 </html>
